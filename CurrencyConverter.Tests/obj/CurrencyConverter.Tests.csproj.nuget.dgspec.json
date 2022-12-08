@@ -1,31 +1,42 @@
 {
   "format": 1,
   "restore": {
-    "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj": {}
+    "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter.Tests\\CurrencyConverter.Tests.csproj": {}
   },
   "projects": {
-    "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj": {
+    "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter.Tests\\CurrencyConverter.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter.Tests\\CurrencyConverter.Tests.csproj",
         "projectName": "CurrencyConverter.Tests",
-        "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
-        "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-        "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/obj/",
+        "projectPath": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter.Tests\\CurrencyConverter.Tests.csproj",
+        "packagesPath": "C:\\Users\\hosub\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter.Tests\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/dianadipalma/.config/NuGet/NuGet.Config"
+          "C:\\Users\\hosub\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {},
-          "https://itsals.pkgs.visualstudio.com/_packaging/ASInternal/nuget/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {}
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter\\CurrencyConverter.csproj": {
+                "projectPath": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter\\CurrencyConverter.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -36,6 +47,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
@@ -56,16 +68,91 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter\\CurrencyConverter.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter\\CurrencyConverter.csproj",
+        "projectName": "CurrencyConverter",
+        "projectPath": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter\\CurrencyConverter.csproj",
+        "packagesPath": "C:\\Users\\hosub\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hosub\\OneDrive\\Documents\\GitHub\\currency-converter-kfbzpm\\CurrencyConverter\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\hosub\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
