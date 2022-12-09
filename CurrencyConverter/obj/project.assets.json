@@ -8,29 +8,29 @@
     ".NETStandard,Version=v2.1": []
   },
   "packageFolders": {
-    "/Users/dianadipalma/.nuget/packages/": {}
+    "/Users/andyduffield/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+      "projectUniqueName": "/Users/andyduffield/Desktop/Programs/AlaskaHiring/currency-converter-fpergj/CurrencyConverter/CurrencyConverter.csproj",
       "projectName": "CurrencyConverter",
-      "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
-      "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-      "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/obj/",
+      "projectPath": "/Users/andyduffield/Desktop/Programs/AlaskaHiring/currency-converter-fpergj/CurrencyConverter/CurrencyConverter.csproj",
+      "packagesPath": "/Users/andyduffield/.nuget/packages/",
+      "outputPath": "/Users/andyduffield/Desktop/Programs/AlaskaHiring/currency-converter-fpergj/CurrencyConverter/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/dianadipalma/.config/NuGet/NuGet.Config"
+        "/Users/andyduffield/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {},
-        "https://itsals.pkgs.visualstudio.com/_packaging/ASInternal/nuget/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "projectReferences": {}
         }
       },
@@ -42,13 +42,15 @@
     },
     "frameworks": {
       "netstandard2.1": {
+        "targetAlias": "netstandard2.1",
         "imports": [
           "net461",
           "net462",
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -57,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100/RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/Users/dianadipalma/.dotnet/store/|arch|/|tfm|",
-      "/Users/dianadipalma/.nuget/packages"
+      "/Users/andyduffield/.dotnet/store/|arch|/|tfm|",
+      "/Users/andyduffield/.nuget/packages"
     ]
   }
 }
