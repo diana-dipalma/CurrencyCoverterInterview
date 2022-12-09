@@ -8,29 +8,31 @@
     ".NETStandard,Version=v2.1": []
   },
   "packageFolders": {
-    "/Users/dianadipalma/.nuget/packages/": {}
+    "C:\\Users\\hanna\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+      "projectUniqueName": "C:\\Users\\hanna\\Documents\\alaskaairlines\\currency-converter-aeafpd\\CurrencyConverter\\CurrencyConverter.csproj",
       "projectName": "CurrencyConverter",
-      "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
-      "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-      "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/obj/",
+      "projectPath": "C:\\Users\\hanna\\Documents\\alaskaairlines\\currency-converter-aeafpd\\CurrencyConverter\\CurrencyConverter.csproj",
+      "packagesPath": "C:\\Users\\hanna\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\hanna\\Documents\\alaskaairlines\\currency-converter-aeafpd\\CurrencyConverter\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/dianadipalma/.config/NuGet/NuGet.Config"
+        "C:\\Users\\hanna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {},
-        "https://itsals.pkgs.visualstudio.com/_packaging/ASInternal/nuget/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "projectReferences": {}
         }
       },
@@ -42,13 +44,15 @@
     },
     "frameworks": {
       "netstandard2.1": {
+        "targetAlias": "netstandard2.1",
         "imports": [
           "net461",
           "net462",
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -57,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

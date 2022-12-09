@@ -6,5 +6,6 @@ namespace CurrencyConverter
         public String CountryCode;
         public String CurrencyName;
         public Decimal RateFromUSDToCurrency;
+
     }
 }
