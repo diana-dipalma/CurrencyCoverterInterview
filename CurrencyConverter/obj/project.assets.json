@@ -8,29 +8,39 @@
     ".NETStandard,Version=v2.1": []
   },
   "packageFolders": {
-    "/Users/dianadipalma/.nuget/packages/": {}
+    "C:\\Users\\tutie\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+      "projectUniqueName": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter\\CurrencyConverter.csproj",
       "projectName": "CurrencyConverter",
-      "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
-      "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-      "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/obj/",
+      "projectPath": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter\\CurrencyConverter.csproj",
+      "packagesPath": "C:\\Users\\tutie\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "/Users/dianadipalma/.config/NuGet/NuGet.Config"
+        "C:\\Users\\tutie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.1"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {},
-        "https://itsals.pkgs.visualstudio.com/_packaging/ASInternal/nuget/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "projectReferences": {}
         }
       },
@@ -42,6 +52,7 @@
     },
     "frameworks": {
       "netstandard2.1": {
+        "targetAlias": "netstandard2.1",
         "imports": [
           "net461",
           "net462",
@@ -57,7 +68,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }

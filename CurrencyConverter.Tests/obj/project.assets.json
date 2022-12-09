@@ -1225,6 +1225,16 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
+      },
+      "CurrencyConverter/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/CurrencyConverter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CurrencyConverter.dll": {}
+        }
       }
     }
   },
@@ -4618,40 +4628,60 @@
         "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xpath.xmldocument.nuspec"
       ]
+    },
+    "CurrencyConverter/1.0.0": {
+      "type": "project",
+      "path": "../CurrencyConverter/CurrencyConverter.csproj",
+      "msbuildProject": "../CurrencyConverter/CurrencyConverter.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "CurrencyConverter >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 16.4.0",
       "NUnit3TestAdapter >= 3.15.1",
       "nunit >= 3.12.0"
     ]
   },
   "packageFolders": {
-    "/Users/dianadipalma/.nuget/packages/": {}
+    "C:\\Users\\tutie\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter.Tests\\CurrencyConverter.Tests.csproj",
       "projectName": "CurrencyConverter.Tests",
-      "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
-      "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-      "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/obj/",
+      "projectPath": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter.Tests\\CurrencyConverter.Tests.csproj",
+      "packagesPath": "C:\\Users\\tutie\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter.Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "/Users/dianadipalma/.config/NuGet/NuGet.Config"
+        "C:\\Users\\tutie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {},
-        "https://itsals.pkgs.visualstudio.com/_packaging/ASInternal/nuget/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {
+            "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter\\CurrencyConverter.csproj": {
+              "projectPath": "C:\\Users\\tutie\\OneDrive\\Documents\\Alaska\\CurrencyConverter\\CurrencyConverter.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -4662,6 +4692,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",
@@ -4691,7 +4722,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }
