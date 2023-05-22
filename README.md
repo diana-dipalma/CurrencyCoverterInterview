@@ -21,7 +21,7 @@ Your assignment is to implement a currency converter using C#.
 
 ### CodeSubmit
 
-Please organize, design, test and document your code as if it were going into production - then push your changes to the master branch. After you have pushed your code, you may submit the assignment on the assignment page.
+Please organize, design, test and document your code as if it were going into production - then open a PR against the main branch.
 
 All the best and happy coding,
 
