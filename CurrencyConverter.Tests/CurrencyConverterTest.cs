@@ -1,4 +1,4 @@
-using NUnit.Fåramework;
+using NUnit.Framework;
 
 namespace CurrencyConverter.Tests
 {
