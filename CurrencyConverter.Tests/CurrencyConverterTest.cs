@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using CurrencyConverter;
 
 namespace CurrencyConverter.Tests
 {
