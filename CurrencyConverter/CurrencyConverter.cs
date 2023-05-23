@@ -19,7 +19,7 @@ namespace CurrencyConverter
             var usd_conversions = repository.GetConversions();
             foreach (var conv1 in usd_conversions)
             {
-                var code = conv1.CountryCode;
+                var code = conv1.CurrencyCode;
                 if (!IsValidCurrencyCode(code))
                 {
                     throw new ArgumentException(
@@ -28,13 +28,13 @@ namespace CurrencyConverter
                 }
                 if (conv1.RateFromUSDToCurrency <= 0)
                 {
-                    throw new ArgumentException($"Invalid rate for currency: {conv1.CountryCode}");
+                    throw new ArgumentException($"Invalid rate for currency: {conv1.CurrencyCode}");
                 }
-                _supportedCurrencies.Add(conv1.CountryCode);
+                _supportedCurrencies.Add(conv1.CurrencyCode);
                 foreach (var conv2 in usd_conversions)
                 {
                     Decimal rate = conv2.RateFromUSDToCurrency / conv1.RateFromUSDToCurrency;
-                    _conversions[(conv1.CountryCode, conv2.CountryCode)] = rate;
+                    _conversions[(conv1.CurrencyCode, conv2.CurrencyCode)] = rate;
                 }
             }
         }

@@ -42,7 +42,7 @@ namespace CurrencyConverter.Tests
                 {
                     new CurrencyConversion()
                     {
-                        CountryCode = "CAD",
+                        CurrencyCode = "CAD",
                         CurrencyName = "Canadian Dollars",
                         RateFromUSDToCurrency = 0M
                     },
@@ -68,7 +68,7 @@ namespace CurrencyConverter.Tests
                 {
                     new CurrencyConversion()
                     {
-                        CountryCode = "JPY",
+                        CurrencyCode = "JPY",
                         CurrencyName = "Japanese Yen",
                         RateFromUSDToCurrency = -138.62M
                     },
@@ -94,7 +94,7 @@ namespace CurrencyConverter.Tests
                 {
                     new CurrencyConversion()
                     {
-                        CountryCode = "UUSD",
+                        CurrencyCode = "UUSD",
                         CurrencyName = "United United States Dollars",
                         RateFromUSDToCurrency = 1M
                     },
@@ -109,10 +109,13 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Currency codes must be 3 uppercase alpha characters: UUSD"));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Currency codes must be 3 uppercase alpha characters: UUSD")
+            );
         }
 
-            private class BadCurrencyCodeRepository2 : ICurrencyConverterRepository
+        private class BadCurrencyCodeRepository2 : ICurrencyConverterRepository
         {
             public IEnumerable<CurrencyConversion> GetConversions()
             {
@@ -120,7 +123,7 @@ namespace CurrencyConverter.Tests
                 {
                     new CurrencyConversion()
                     {
-                        CountryCode = "123",
+                        CurrencyCode = "123",
                         CurrencyName = "United States Dollars",
                         RateFromUSDToCurrency = 123M
                     },
@@ -135,11 +138,13 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Currency codes must be 3 uppercase alpha characters: 123"));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Currency codes must be 3 uppercase alpha characters: 123")
+            );
         }
 
-
-            private class BadCurrencyCodeRepository3 : ICurrencyConverterRepository
+        private class BadCurrencyCodeRepository3 : ICurrencyConverterRepository
         {
             public IEnumerable<CurrencyConversion> GetConversions()
             {
@@ -147,7 +152,7 @@ namespace CurrencyConverter.Tests
                 {
                     new CurrencyConversion()
                     {
-                        CountryCode = "uSD",
+                        CurrencyCode = "uSD",
                         CurrencyName = "united States Dollars",
                         RateFromUSDToCurrency = 1.0M
                     },
@@ -162,7 +167,10 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Currency codes must be 3 uppercase alpha characters: uSD"));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Currency codes must be 3 uppercase alpha characters: uSD")
+            );
         }
     }
 }
