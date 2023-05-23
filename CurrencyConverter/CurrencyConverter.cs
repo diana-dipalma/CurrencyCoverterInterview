@@ -6,8 +6,15 @@ namespace CurrencyConverter
 {
     public class CurrencyConverter
     {
+        private struct CachedRateKey
+        {
+            public string FromCurrency;
+            public string ToCurrency;
+            public string IntermediateCurrency;
+        }
+
         private readonly Dictionary<string, string> _supportedCurrencyNames;
-        private readonly Dictionary<(string, string), Decimal> _conversions;
+        private readonly Dictionary<CachedRateKey, Decimal> _cachedRates;
 
         public CurrencyConverter()
             : this(new CurrencyConverterRepository()) { }
@@ -15,7 +22,7 @@ namespace CurrencyConverter
         public CurrencyConverter(ICurrencyConverterRepository repository)
         {
             _supportedCurrencyNames = new Dictionary<string, string>();
-            _conversions = new Dictionary<(string, string), Decimal>();
+            _cachedRates = new Dictionary<CachedRateKey, Decimal>();
             var usd_conversions = repository.GetConversions();
             foreach (var conv1 in usd_conversions)
             {
@@ -40,12 +47,28 @@ namespace CurrencyConverter
                 foreach (var conv2 in usd_conversions)
                 {
                     Decimal pairRate = conv2.RateFromUSDToCurrency / conv1.RateFromUSDToCurrency;
-                    _conversions[(conv1.CurrencyCode, conv2.CurrencyCode)] = pairRate;
+                    var cachedRateKey = new CachedRateKey()
+                    {
+                        FromCurrency = conv1.CurrencyCode,
+                        ToCurrency = conv2.CurrencyCode,
+                        IntermediateCurrency = "USD"
+                    };
+                    _cachedRates[cachedRateKey] = pairRate;
                 }
             }
         }
 
         public Decimal GetConvertedAmount(string fromCurrency, string toCurrency, Decimal amount)
+        {
+            return GetConvertedAmount(fromCurrency, toCurrency, new[] { "USD" }, amount);
+        }
+
+        public Decimal GetConvertedAmount(
+            string fromCurrency,
+            string toCurrency,
+            IEnumerable<string> intermediateCurrencies,
+            Decimal amount
+        )
         {
             if (!_supportedCurrencyNames.ContainsKey(fromCurrency))
             {
@@ -59,19 +82,52 @@ namespace CurrencyConverter
                     $"Unsupported currency: {nameof(toCurrency)}={toCurrency}"
                 );
             }
-            var rate = GetConversionRate(fromCurrency, toCurrency);
-            return Math.Round(amount * rate, 2);
+            foreach (var intermediate in intermediateCurrencies)
+            {
+                if (!_supportedCurrencyNames.ContainsKey(intermediate))
+                {
+                    throw new ArgumentException(
+                        $"Unsupported intermediate currency: {intermediate}"
+                    );
+                }
+            }
+            foreach (var intermediate in intermediateCurrencies)
+            {
+                var cachedRateKey = new CachedRateKey()
+                {
+                    FromCurrency = fromCurrency,
+                    ToCurrency = toCurrency,
+                    IntermediateCurrency = intermediate
+                };
+
+                if (_cachedRates.ContainsKey(cachedRateKey))
+                {
+                    var rate = GetConversionRate(cachedRateKey);
+                    return Math.Round(amount * rate, 2);
+                }
+            }
+            throw new ArgumentException(
+                string.Format(
+                    "No conversion rate found for {0} to {1} via any of [{2}]",
+                    fromCurrency,
+                    toCurrency,
+                    string.Join(", ", intermediateCurrencies)
+                )
+            );
         }
 
         public string GetCurrencyName(string currencyCode)
         {
-            if (!_supportedCurrencyNames.ContainsKey(currencyCode))
+            if (_supportedCurrencyNames.TryGetValue(currencyCode, out string currencyName))
+            {
+                return currencyName;
+            }
+            else
             {
                 throw new ArgumentException(
                     $"Unsupported currency: {nameof(currencyCode)}={currencyCode}"
                 );
             }
-            return _supportedCurrencyNames[currencyCode];
         }
 
         private bool IsValidCurrencyCode(string code)
@@ -79,9 +135,18 @@ namespace CurrencyConverter
             return code != null && code.Length == 3 && Regex.IsMatch(code, @"^[A-Z]+$");
         }
 
-        private Decimal GetConversionRate(string fromCurrency, string toCurrency)
+        private Decimal GetConversionRate(CachedRateKey cachedRateKey)
         {
-            return _conversions[(fromCurrency, toCurrency)];
+            if (_cachedRates.TryGetValue(cachedRateKey, out decimal rate))
+            {
+                return rate;
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Conversion rate from {cachedRateKey.FromCurrency} to {cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency} does not exist."
+                );
+            }
         }
     }
 }

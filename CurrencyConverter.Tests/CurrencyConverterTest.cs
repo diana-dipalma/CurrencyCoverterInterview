@@ -209,5 +209,38 @@ namespace CurrencyConverter.Tests
                 Is.EqualTo("United States Dollars")
             );
         }
+
+        [Test]
+        public void TestUnsupportedIntermediateCurrency()
+        {
+            var ex = Assert.Throws<System.ArgumentException>(
+                () =>
+                    _currencyConverter.GetConvertedAmount(
+                        "CAD",
+                        "MXN",
+                        new string[] { "USD", "EUR" },
+                        1
+                    )
+            );
+            Assert.That(ex.Message, Is.EqualTo("Unsupported intermediate currency: EUR"));
+        }
+
+        [Test]
+        public void TestMissingIntermediateCurrency()
+        {
+            var ex = Assert.Throws<System.ArgumentException>(
+                () =>
+                    _currencyConverter.GetConvertedAmount(
+                        "CAD",
+                        "MXN",
+                        new string[] { "DKK", "PLN" },
+                        1
+                    )
+            );
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("No conversion rate found for CAD to MXN via any of [DKK, PLN]")
+            );
+        }
     }
 }
