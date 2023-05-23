@@ -39,7 +39,7 @@ namespace CurrencyConverter
                 {
                     throw new ArgumentException($"Invalid rate for currency {code}: {usdRate}");
                 }
-                if (String.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     throw new ArgumentException($"Invalid name for currency {code}: {name}");
                 }
