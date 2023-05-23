@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CurrencyConverter
@@ -13,8 +14,8 @@ namespace CurrencyConverter
             public string IntermediateCurrency;
         }
 
-        private readonly Dictionary<string, string> _supportedCurrencyNames;
-        private readonly Dictionary<CachedRateKey, Decimal> _cachedRates;
+        private Dictionary<string, string> _supportedCurrencyNames;
+        private Dictionary<CachedRateKey, Decimal> _cachedRates;
 
         public CurrencyConverter()
             : this(new CurrencyConverterRepository()) { }
@@ -44,6 +45,13 @@ namespace CurrencyConverter
                     throw new ArgumentException($"Invalid name for currency {code}: {name}");
                 }
                 _supportedCurrencyNames[conv1.CurrencyCode] = conv1.CurrencyName;
+                var directUsdRateKey = new CachedRateKey()
+                {
+                    FromCurrency = "USD",
+                    ToCurrency = conv1.CurrencyCode,
+                    IntermediateCurrency = null
+                };
+                _cachedRates[directUsdRateKey] = conv1.RateFromUSDToCurrency;
                 foreach (var conv2 in usd_conversions)
                 {
                     Decimal pairRate = conv2.RateFromUSDToCurrency / conv1.RateFromUSDToCurrency;
@@ -91,8 +99,16 @@ namespace CurrencyConverter
                     );
                 }
             }
-            foreach (var intermediate in intermediateCurrencies)
+            var directRateKey = new CachedRateKey()
             {
+                FromCurrency = fromCurrency,
+                ToCurrency = toCurrency,
+                IntermediateCurrency = null
+            };
+            // First preference is a direct rate (null intermediate currency in cached rate key)
+            string[] direct = {null};
+            string[] intermediates = direct.Concat(intermediateCurrencies).ToArray();
+            foreach (var intermediate in intermediates) {
                 var cachedRateKey = new CachedRateKey()
                 {
                     FromCurrency = fromCurrency,
