@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CurrencyConverter
 {
-    public class CurrencyConverterRepository
+    public class CurrencyConverterRepository : ICurrencyConverterRepository
     {
         public IEnumerable<CurrencyConversion> GetConversions()
         {
