@@ -57,7 +57,7 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Invalid rate for currency: CAD"));
+            Assert.That(ex.Message, Is.EqualTo("Invalid rate for currency CAD: 0"));
         }
 
         private class NegativeRepository : ICurrencyConverterRepository
@@ -83,7 +83,7 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Invalid rate for currency: JPY"));
+            Assert.That(ex.Message, Is.EqualTo("Invalid rate for currency JPY: -138.62"));
         }
 
         private class BadCurrencyCodeRepository1 : ICurrencyConverterRepository
@@ -170,6 +170,43 @@ namespace CurrencyConverter.Tests
             Assert.That(
                 ex.Message,
                 Is.EqualTo("Currency codes must be 3 uppercase alpha characters: uSD")
+            );
+        }
+
+        private class BadCurrencyCodeRepository4 : ICurrencyConverterRepository
+        {
+            public IEnumerable<CurrencyConversion> GetConversions()
+            {
+                return new[]
+                {
+                    new CurrencyConversion()
+                    {
+                        CurrencyName = "code was null",
+                        RateFromUSDToCurrency = 1.0M
+                    },
+                };
+            }
+        }
+
+        [Test]
+        public void TestBadCurrencyCodeRepository4()
+        {
+            var bad_repository = new BadCurrencyCodeRepository4();
+            var ex = Assert.Throws<System.ArgumentException>(
+                () => new CurrencyConverter(bad_repository)
+            );
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Currency codes must be 3 uppercase alpha characters: ")
+            );
+        }
+
+        [Test]
+        public void TestGetCurrencyName()
+        {
+            Assert.That(
+                _currencyConverter.GetCurrencyName("USD"),
+                Is.EqualTo("United States Dollars")
             );
         }
     }
