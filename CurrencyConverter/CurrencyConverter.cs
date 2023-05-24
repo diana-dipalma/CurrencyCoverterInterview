@@ -88,7 +88,7 @@ namespace CurrencyConverter
                 if (_cachedRates.ContainsKey(cachedRateKey))
                 {
                     var rate = GetConversionRate(cachedRateKey);
-                    return Math.Round(amount * rate, 2);
+                    return RoundUsingCurrencyRules(amount * rate, toCurrency);
                 }
             }
             throw new ArgumentException(
@@ -117,23 +117,27 @@ namespace CurrencyConverter
 
         public void ProcessUpdate(CurrencyUpdate update)
         {
-            if (update.Deletions != null) {
-            foreach (var code in update.Deletions)
+            if (update.Deletions != null)
             {
-                ProcessDeletion(code);
+                foreach (var code in update.Deletions)
+                {
+                    ProcessDeletion(code);
+                }
             }
-            }
-            if (update.CurrencyInfos != null) {
-            foreach (var info in update.CurrencyInfos)
+            if (update.CurrencyInfos != null)
             {
-                ProcessInfo(info);
-            }}
-            if (update.UpdatedConversions != null) {
-            var updatedCurrencies = ProcessUpdatedConversions(update.UpdatedConversions);
-            foreach (var code in updatedCurrencies)
-            {
-                UpdateIntermediateConversions(code);
+                foreach (var info in update.CurrencyInfos)
+                {
+                    ProcessInfo(info);
+                }
             }
+            if (update.UpdatedConversions != null)
+            {
+                var updatedCurrencies = ProcessUpdatedConversions(update.UpdatedConversions);
+                foreach (var code in updatedCurrencies)
+                {
+                    UpdateIntermediateConversions(code);
+                }
             }
         }
 
@@ -163,12 +167,13 @@ namespace CurrencyConverter
             {
                 throw new ArgumentException($"Invalid name for currency {code}: {name}");
             }
+            // This condition matches if both are null or neither is null
             if ((decimalDigits == null) == (roundingIncrement == null))
             {
                 throw new ArgumentException(
                     $"Exactly one of decimalDigits and roundingIncrement must be set in " +
-                    " currency info for {code}: decimalDigits={decimalDigits}, " +
-                    "roundingIncrement={roundingIncrement}"
+                    $"currency info for {code}: decimalDigits={decimalDigits}, " +
+                    $"roundingIncrement={roundingIncrement}"
                 );
             }
             if (decimalDigits != null && (decimalDigits.Value < 0))
@@ -233,7 +238,8 @@ namespace CurrencyConverter
             return updatedCurrencies;
         }
 
-        private void UpdateKnownRatePair(string from, string to) {
+        private void UpdateKnownRatePair(string from, string to)
+        {
             if (!_knownDirectRatesFromCurrency.TryGetValue(from, out HashSet<string> fromRates))
             {
                 fromRates = new HashSet<string>();
@@ -306,6 +312,24 @@ namespace CurrencyConverter
                     "{cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency} " +
                     "does not exist."
                 );
+            }
+        }
+
+        private Decimal RoundUsingCurrencyRules(Decimal amount, string currencyCode)
+        {
+            if (!_supportedCurrencyInfos.TryGetValue(currencyCode, out CurrencyInfo info))
+            {
+                throw new InvalidOperationException(
+                    $"Currency {currencyCode} is not supported, cannot round."
+                );
+            }
+            if (info.DecimalDigits != null)
+            {
+                return Math.Round(amount, info.DecimalDigits.Value);
+            }
+            else
+            {
+                return Math.Round(amount / info.RoundingIncrement.Value) * info.RoundingIncrement.Value;
             }
         }
     }

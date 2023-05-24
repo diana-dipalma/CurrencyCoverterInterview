@@ -313,9 +313,108 @@ namespace CurrencyConverter.Tests
             Assert.That(ex.Message, Is.EqualTo("Unsupported currency: fromCurrency=CAD"));
 
             ex = Assert.Throws<System.ArgumentException>(
-                () => _currencyConverter.GetConvertedAmount("MXN", "USD", new string[] {"CAD"}, 1M)
+                () => _currencyConverter.GetConvertedAmount("MXN", "USD", new string[] { "CAD" }, 1M)
             );
             Assert.That(ex.Message, Is.EqualTo("Unsupported intermediate currency: CAD"));
+        }
+
+        [Test]
+        public void TestUpdateInfoAndRounding()
+        {
+            Assert.AreEqual(10.04M, _currencyConverter.GetConvertedAmount("CAD", "MXN", 0.62M));
+            Assert.AreEqual("Mexico Pesos", _currencyConverter.GetCurrencyName("MXN"));
+
+            // Change name and set rounding to 0 decimal places.
+            var updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("MXN", "Mexican Pesos", 0, null),
+               },
+               null);
+            _currencyConverter.ProcessUpdate(updateWithInfo);
+            Assert.AreEqual(10M, _currencyConverter.GetConvertedAmount("CAD", "MXN", 0.62M));
+            Assert.AreEqual("Mexican Pesos", _currencyConverter.GetCurrencyName("MXN"));
+
+            // Change name back and set rounding to 3 decimal places
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("MXN", "Mexico Pesos", 3, null),
+               },
+               null);
+            _currencyConverter.ProcessUpdate(updateWithInfo);
+            Assert.AreEqual(10.037M, _currencyConverter.GetConvertedAmount("CAD", "MXN", 0.62M));
+            Assert.AreEqual("Mexico Pesos", _currencyConverter.GetCurrencyName("MXN"));
+
+            // Set rounding to nearest 5 cents
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("MXN", "Mexico Pesos", null, 0.05M),
+               },
+               null);
+            _currencyConverter.ProcessUpdate(updateWithInfo);
+            Assert.AreEqual(10.05M, _currencyConverter.GetConvertedAmount("CAD", "MXN", 0.62M));
+
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo(null, "Mexico Pesos", null, 0.05M),
+               },
+               null);
+            var ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.ProcessUpdate(updateWithInfo));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Currency codes must be 3 uppercase alpha characters: "));
+
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("MXN", null, null, 0.05M),
+               },
+               null);
+            ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.ProcessUpdate(updateWithInfo));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Invalid name for currency MXN: "));
+
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("MXN", "Mexico Pesos", null, null),
+               },
+               null);
+            ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.ProcessUpdate(updateWithInfo));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Exactly one of decimalDigits and roundingIncrement must be " +
+                "set in currency info for MXN: decimalDigits=, roundingIncrement="));
+
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("MXN", "Mexico Pesos", 2, 0.05M),
+               },
+               null);
+            ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.ProcessUpdate(updateWithInfo));
+            Assert.That(
+                ex.Message,
+                Is.EqualTo("Exactly one of decimalDigits and roundingIncrement must be " +
+                "set in currency info for MXN: decimalDigits=2, roundingIncrement=0.05"));
+
+            // Test adding info for a new currency rather than updating an existing one.
+            updateWithInfo = new CurrencyUpdate(
+               null,
+               new CurrencyInfo[] {
+                   new CurrencyInfo("EUR", "Euros", 2, null),
+               },
+               null);
+            _currencyConverter.ProcessUpdate(updateWithInfo);               
+            Assert.AreEqual("Euros", _currencyConverter.GetCurrencyName("EUR"));
         }
     }
 }
