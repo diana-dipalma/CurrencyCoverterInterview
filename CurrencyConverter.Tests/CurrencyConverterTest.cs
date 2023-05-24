@@ -17,11 +17,11 @@ namespace CurrencyConverter.Tests
         [Test]
         public void TestConversions()
         {
-            Assert.AreEqual(1.00, _currencyConverter.GetConvertedAmount("USD", "USD", 1));
-            Assert.AreEqual(20.56, _currencyConverter.GetConvertedAmount("USD", "MXN", 1));
-            Assert.AreEqual(6.35, _currencyConverter.GetConvertedAmount("USD", "CAD", 5));
-            Assert.AreEqual(0.62, _currencyConverter.GetConvertedAmount("MXN", "CAD", 10));
-            Assert.AreEqual(0.61, _currencyConverter.GetConvertedAmount("DKK", "PLN", 1));
+            Assert.AreEqual(1.00M, _currencyConverter.GetConvertedAmount("USD", "USD", 1M));
+            Assert.AreEqual(20.56M, _currencyConverter.GetConvertedAmount("USD", "MXN", 1M));
+            Assert.AreEqual(6.35M, _currencyConverter.GetConvertedAmount("USD", "CAD", 5M));
+            Assert.AreEqual(0.62M, _currencyConverter.GetConvertedAmount("MXN", "CAD", 10M));
+            Assert.AreEqual(0.61M, _currencyConverter.GetConvertedAmount("DKK", "PLN", 1M));
 
             var ex = Assert.Throws<System.ArgumentException>(
                 () => _currencyConverter.GetConvertedAmount("EUR", "USD", 1)
@@ -256,7 +256,8 @@ namespace CurrencyConverter.Tests
         }
 
         [Test]
-        public void TestConstructUpdateFromLegacyConversions() {
+        public void TestConstructUpdateFromLegacyConversions()
+        {
             var update = new CurrencyUpdate(
                 new CurrencyConverterRepository().GetConversions());
             Assert.AreEqual(
@@ -285,6 +286,36 @@ namespace CurrencyConverter.Tests
                     }
                 )
             );
+        }
+
+        [Test]
+        public void TestDeleteCurrency()
+        {
+            Assert.AreEqual(6.35M, _currencyConverter.GetConvertedAmount("USD", "CAD", 5.00M));
+            Assert.AreEqual(5.00M, _currencyConverter.GetConvertedAmount("CAD", "USD", 6.35M));
+            Assert.AreEqual(0.62M, _currencyConverter.GetConvertedAmount("MXN", "CAD", 10.00M));
+            // Weird rounding but it checks out: 0.62*20.56/1.27 = 10.037165
+            Assert.AreEqual(10.04M, _currencyConverter.GetConvertedAmount("CAD", "MXN", 0.62M));
+            Assert.AreEqual("Canada Dollars", _currencyConverter.GetCurrencyName("CAD"));
+
+            var updateWithDeletion = new CurrencyUpdate(
+               new string[] { "CAD" }, null, null);
+            _currencyConverter.ProcessUpdate(updateWithDeletion);
+
+            var ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.GetConvertedAmount("USD", "CAD", 5.00M)
+            );
+            Assert.That(ex.Message, Is.EqualTo("Unsupported currency: toCurrency=CAD"));
+
+            ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.GetConvertedAmount("CAD", "USD", 6.35M)
+            );
+            Assert.That(ex.Message, Is.EqualTo("Unsupported currency: fromCurrency=CAD"));
+
+            ex = Assert.Throws<System.ArgumentException>(
+                () => _currencyConverter.GetConvertedAmount("MXN", "USD", new string[] {"CAD"}, 1M)
+            );
+            Assert.That(ex.Message, Is.EqualTo("Unsupported intermediate currency: CAD"));
         }
     }
 }

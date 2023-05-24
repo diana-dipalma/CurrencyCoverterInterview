@@ -115,14 +115,30 @@ namespace CurrencyConverter
             }
         }
 
+        public void ProcessUpdate(CurrencyUpdate update)
+        {
+            if (update.Deletions != null) {
+            foreach (var code in update.Deletions)
+            {
+                ProcessDeletion(code);
+            }
+            }
+            if (update.CurrencyInfos != null) {
+            foreach (var info in update.CurrencyInfos)
+            {
+                ProcessInfo(info);
+            }}
+            if (update.UpdatedConversions != null) {
+            var updatedCurrencies = ProcessUpdatedConversions(update.UpdatedConversions);
+            foreach (var code in updatedCurrencies)
+            {
+                UpdateIntermediateConversions(code);
+            }
+            }
+        }
+
         private void ProcessDeletion(string code)
         {
-            if (!_supportedCurrencyInfos.Remove(code))
-            {
-                throw new ArgumentException(
-                    $"Currency {code} was not supported, cannot delete it."
-                );
-            }
             if (!_supportedCurrencyInfos.Remove(code))
             {
                 throw new ArgumentException(
@@ -272,23 +288,6 @@ namespace CurrencyConverter
             }
         }
 
-        private void ProcessUpdate(CurrencyUpdate update)
-        {
-            foreach (var code in update.Deletions)
-            {
-                ProcessDeletion(code);
-            }
-            foreach (var info in update.CurrencyInfos)
-            {
-                ProcessInfo(info);
-            }
-            var updatedCurrencies = ProcessUpdatedConversions(update.UpdatedConversions);
-            foreach (var code in updatedCurrencies)
-            {
-                UpdateIntermediateConversions(code);
-            }
-        }
-
         private bool IsValidCurrencyCode(string code)
         {
             return code != null && code.Length == 3 && Regex.IsMatch(code, @"^[A-Z]+$");
@@ -296,8 +295,6 @@ namespace CurrencyConverter
 
         private Decimal GetConversionRate(CachedRateKey cachedRateKey)
         {
-            Console.WriteLine($"Getting conversion rate for {cachedRateKey.FromCurrency} to " +
-                $"{cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency}");
             if (_cachedRates.TryGetValue(cachedRateKey, out decimal rate))
             {
                 return rate;
