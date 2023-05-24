@@ -413,8 +413,35 @@ namespace CurrencyConverter.Tests
                    new CurrencyInfo("EUR", "Euros", 2, null),
                },
                null);
-            _currencyConverter.ProcessUpdate(updateWithInfo);               
+            _currencyConverter.ProcessUpdate(updateWithInfo);
             Assert.AreEqual("Euros", _currencyConverter.GetCurrencyName("EUR"));
+        }
+
+        [Test]
+        public void TestUpdateRatesAndConvertThroughMXN()
+        {
+            // Rates are through USD using default legacy repository
+            Assert.AreEqual(31.98M, _currencyConverter.GetConvertedAmount("CRC", "MXN", 1000M));
+            Assert.AreEqual(61.77M, _currencyConverter.GetConvertedAmount("MXN", "CAD", 1000M));
+            Assert.AreEqual(1.98M, _currencyConverter.GetConvertedAmount("CRC", "CAD", 1000M));
+
+            // Rates as of 2023-05-24
+            var updateWithNewRates = new CurrencyUpdate(
+               null,
+               null,
+               new CurrencyConversionPair[] {
+                   new CurrencyConversionPair("CRC", "MXN", 0.033M),
+                   new CurrencyConversionPair("MXN", "CAD", 0.076M),
+               });
+            _currencyConverter.ProcessUpdate(updateWithNewRates);
+
+            // Using new direct rates
+            Assert.AreEqual(33.00M, _currencyConverter.GetConvertedAmount("CRC", "MXN", 1000M));
+            Assert.AreEqual(76.00M, _currencyConverter.GetConvertedAmount("MXN", "CAD", 1000M));
+
+            // Can convert through MXN. 1000 CRC = 33 MXN, 33 MXN = 2.51 CAD
+            Assert.AreEqual(2.51M, _currencyConverter.GetConvertedAmount(
+                "CRC", "CAD", new string[] { "MXN" }, 1000M));
         }
     }
 }
