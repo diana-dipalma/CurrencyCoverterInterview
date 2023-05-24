@@ -67,8 +67,9 @@ namespace CurrencyConverter
         private readonly string _currencyName;
 
         // At most one of these can be set, and if set it will determine the rounding behavior.
-        // Either if set must be a positive value. If neither is set, the default will be rounding
-        // to 2 decimal places (equivalent to setting DecimalDigits to 2 or RoundIncrement to 0.01).
+        // If DecimalDigits is it must be non-negative and if RoundingIncrmenet is set it must be
+        // positive value. If neither is set, the default will be rounding to 2 decimal places
+        // (equivalent to setting DecimalDigits to 2 or RoundIncrement to 0.01).
         private readonly Nullable<int> _decimalDigits;
         private readonly Nullable<Decimal> _roundingIncrement;
     }

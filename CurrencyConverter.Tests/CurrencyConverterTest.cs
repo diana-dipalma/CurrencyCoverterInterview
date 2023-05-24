@@ -46,6 +46,12 @@ namespace CurrencyConverter.Tests
                         CurrencyName = "Canadian Dollars",
                         RateFromUSDToCurrency = 0M
                     },
+                    new CurrencyConversion()
+                    {
+                        CurrencyCode = "USD",
+                        CurrencyName = "United States Dollars",
+                        RateFromUSDToCurrency = 1M
+                    },
                 };
             }
         }
@@ -57,7 +63,7 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Invalid rate for currency CAD: 0"));
+            Assert.That(ex.Message, Is.EqualTo("Invalid rate for conversion from USD to CAD: 0"));
         }
 
         private class NegativeRepository : ICurrencyConverterRepository
@@ -72,6 +78,12 @@ namespace CurrencyConverter.Tests
                         CurrencyName = "Japanese Yen",
                         RateFromUSDToCurrency = -138.62M
                     },
+                    new CurrencyConversion()
+                    {
+                        CurrencyCode = "USD",
+                        CurrencyName = "United States Dollars",
+                        RateFromUSDToCurrency = 1M
+                    },
                 };
             }
         }
@@ -83,7 +95,7 @@ namespace CurrencyConverter.Tests
             var ex = Assert.Throws<System.ArgumentException>(
                 () => new CurrencyConverter(bad_repository)
             );
-            Assert.That(ex.Message, Is.EqualTo("Invalid rate for currency JPY: -138.62"));
+            Assert.That(ex.Message, Is.EqualTo("Invalid rate for conversion from USD to JPY: -138.62"));
         }
 
         private class BadCurrencyCodeRepository1 : ICurrencyConverterRepository
