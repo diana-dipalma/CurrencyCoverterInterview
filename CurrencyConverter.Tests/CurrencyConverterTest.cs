@@ -242,5 +242,37 @@ namespace CurrencyConverter.Tests
                 Is.EqualTo("No conversion rate found for CAD to MXN via any of [DKK, PLN]")
             );
         }
+
+        [Test]
+        public void TestConstructUpdateFromLegacyConversions() {
+            var update = new CurrencyUpdate(
+                new CurrencyConverterRepository().GetConversions());
+            Assert.AreEqual(
+                update,
+                new CurrencyUpdate(
+                    new string[0],
+                    new CurrencyInfo[] {
+                        new CurrencyInfo("USD", "United States Dollars", 2, null),
+                        new CurrencyInfo("CAD", "Canada Dollars", 2, null),
+                        new CurrencyInfo("MXN", "Mexico Pesos", 2, null),
+                        new CurrencyInfo("CRC", "Costa Rica Colons", 2, null),
+                        new CurrencyInfo("DZD", "Algeria Dinars", 2, null),
+                        new CurrencyInfo("CNY", "China Renminbis", 2, null),
+                        new CurrencyInfo("DKK", "Denmark Krones", 2, null),
+                        new CurrencyInfo("PLN", "Poland Zlotys", 2, null),
+                    },
+                    new CurrencyConversionPair[] {
+                        new CurrencyConversionPair("USD", "USD", 1.0M),
+                        new CurrencyConversionPair("USD", "CAD", 1.27M),
+                        new CurrencyConversionPair("USD", "MXN", 20.56M),
+                        new CurrencyConversionPair("USD", "CRC", 642.83M),
+                        new CurrencyConversionPair("USD", "DZD", 140.26M),
+                        new CurrencyConversionPair("USD", "CNY", 6.35M),
+                        new CurrencyConversionPair("USD", "DKK", 6.52M),
+                        new CurrencyConversionPair("USD", "PLN", 3.95M),
+                    }
+                )
+            );
+        }
     }
 }

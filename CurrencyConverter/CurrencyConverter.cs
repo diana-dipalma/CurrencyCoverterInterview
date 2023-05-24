@@ -105,10 +105,12 @@ namespace CurrencyConverter
                 ToCurrency = toCurrency,
                 IntermediateCurrency = null
             };
-            // First preference is a direct rate (null intermediate currency in cached rate key)
-            string[] direct = {null};
+            // First preference is a direct rate
+            // (null intermediate currency in cached rate key)
+            string[] direct = { null };
             string[] intermediates = direct.Concat(intermediateCurrencies).ToArray();
-            foreach (var intermediate in intermediates) {
+            foreach (var intermediate in intermediates)
+            {
                 var cachedRateKey = new CachedRateKey()
                 {
                     FromCurrency = fromCurrency,
@@ -160,7 +162,9 @@ namespace CurrencyConverter
             else
             {
                 throw new InvalidOperationException(
-                    $"Conversion rate from {cachedRateKey.FromCurrency} to {cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency} does not exist."
+                    $"Conversion rate from {cachedRateKey.FromCurrency} to " +
+                    "{cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency} " +
+                    "does not exist."
                 );
             }
         }
