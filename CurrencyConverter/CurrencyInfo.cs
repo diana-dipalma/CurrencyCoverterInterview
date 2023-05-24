@@ -4,6 +4,7 @@ namespace CurrencyConverter
 {
     public class CurrencyInfo
     {
+        // Class with name and rounding rules for a currency.
         public CurrencyInfo(
             string currencyCode,
             string currencyName,

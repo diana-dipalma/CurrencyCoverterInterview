@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using CurrencyConverter;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CurrencyConverter.Tests
 {
@@ -442,6 +444,55 @@ namespace CurrencyConverter.Tests
             // Can convert through MXN. 1000 CRC = 33 MXN, 33 MXN = 2.51 CAD
             Assert.AreEqual(2.51M, _currencyConverter.GetConvertedAmount(
                 "CRC", "CAD", new string[] { "MXN" }, 1000M));
+        }
+
+        [Test]
+        public void TestStressTestConcurrentCalls()
+        {
+            Parallel.For(0, 1000, i =>
+            {
+                var random = new Random();
+                // This will set USD to USD etc to things besides 1 but we don't care,
+                // about the rates or amounts, just making sure this avoids things like this:
+                // Failed TestStressTestConcurrentCalls [18 ms]
+                // Error Message:
+                //  System.AggregateException : One or more errors occurred. (Collection was modified after the enumerator was instantiated.) (Collection was modified after the enumerator was instantiated.)
+                // ----> System.InvalidOperationException : Collection was modified after the enumerator was instantiated.
+                // ----> System.InvalidOperationException : Collection was modified after the enumerator was instantiated.
+                var currencies = new string[] {"USD", "CAD", "MXN", "CRC"};
+                var fromCurrency = currencies[random.Next(currencies.Length)];
+                var toCurrency = currencies[random.Next(currencies.Length)];
+                // Cycling every fourth iteration: change rates, convert amounts, change names, look up names.
+                switch (i % 4)
+                {
+                case 0:
+                    var rate = random.Next(1, 1001) * 0.01M;
+                    var updateWithNewRate = new CurrencyUpdate(
+                       null,
+                       null,
+                       new CurrencyConversionPair[] {
+                           new CurrencyConversionPair(fromCurrency, toCurrency, rate),
+                       });
+                    _currencyConverter.ProcessUpdate(updateWithNewRate);
+                    break;
+                case 1:
+                    _currencyConverter.GetConvertedAmount(fromCurrency, toCurrency, 1000M);
+                    break;
+                case 2:
+                    int currencyIndex = random.Next(currencies.Length);
+                    var name = currencies[currencyIndex] + i;
+                    var updateWithNewName = new CurrencyUpdate(
+                       null,
+                       new CurrencyInfo[] {
+                           new CurrencyInfo(currencies[currencyIndex], name, 2, null),
+                       },
+                       null);
+                       break;
+                case 3:
+                    _currencyConverter.GetCurrencyName(fromCurrency);
+                    break;
+                }
+            });
         }
     }
 }

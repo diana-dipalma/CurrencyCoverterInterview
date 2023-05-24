@@ -20,9 +20,15 @@ namespace CurrencyConverter
         private Dictionary<string, HashSet<string>> _knownDirectRatesFromCurrency;
         private Dictionary<string, HashSet<string>> _knownDirectRatesToCurrency;
 
+        private readonly object _lock = new object();
+
+        // Initialize a CurrencyConvert using the default repository of USD conversions.
+        // Reciprocal rates are automatically added.
         public CurrencyConverter()
             : this(new CurrencyConverterRepository()) { }
 
+        // Initialize a CurrencyConverter using the given repository of conversions.
+        // This is used to inject a mock repository for testing.
         public CurrencyConverter(ICurrencyConverterRepository repository)
         {
             _supportedCurrencyInfos = new Dictionary<string, CurrencyInfo>();
@@ -33,12 +39,14 @@ namespace CurrencyConverter
             ProcessUpdate(new CurrencyUpdate(usd_conversions));
         }
 
+        // Legacy method for converting currencies, uses a direct rate if available, otherwise
+        // attempts to convert through USD.
         public Decimal GetConvertedAmount(string fromCurrency, string toCurrency, Decimal amount)
         {
             return GetConvertedAmount(fromCurrency, toCurrency, new[] { "USD" }, amount);
         }
 
-        public Decimal GetConvertedAmount(
+        private Decimal GetConvertedAmountInternal(
             string fromCurrency,
             string toCurrency,
             IEnumerable<string> intermediateCurrencies,
@@ -101,42 +109,78 @@ namespace CurrencyConverter
             );
         }
 
-        public string GetCurrencyName(string currencyCode)
+        // Convert currencies, preferring direct rates, then falling back on the intermediate
+        // currencies, using the first one that is available.
+        //
+        // This uses a lock to avoid conflicting with ProcessUpdate.
+        public Decimal GetConvertedAmount(
+            string fromCurrency,
+            string toCurrency,
+            IEnumerable<string> intermediateCurrencies,
+            Decimal amount
+        )
         {
-            if (_supportedCurrencyInfos.TryGetValue(currencyCode, out CurrencyInfo info))
+            lock (_lock)
             {
-                return info.CurrencyName;
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Unsupported currency: {nameof(currencyCode)}={currencyCode}"
+                return GetConvertedAmountInternal(
+                    fromCurrency,
+                    toCurrency,
+                    intermediateCurrencies,
+                    amount
                 );
             }
         }
 
+        // Retrieve the name of a currency given its code.
+        //
+        // This uses a lock to avoid conflicting with ProcessUpdate.
+        public string GetCurrencyName(string currencyCode)
+        {
+            lock (_lock)
+            {
+                if (_supportedCurrencyInfos.TryGetValue(currencyCode, out CurrencyInfo info))
+                {
+                    return info.CurrencyName;
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"Unsupported currency: {nameof(currencyCode)}={currencyCode}"
+                    );
+                }
+            }
+        }
+
+        // Process an update to the supported currencies and conversion rates.
+        // Reciprocal rates are automatically added and conversion rates through intermediate
+        // currencies are cached.
+        //
+        // This uses a lock to avoid conflicting with GetConvertedAmount and GetCurrencyName.
         public void ProcessUpdate(CurrencyUpdate update)
         {
-            if (update.Deletions != null)
+            lock (_lock)
             {
-                foreach (var code in update.Deletions)
+                if (update.Deletions != null)
                 {
-                    ProcessDeletion(code);
+                    foreach (var code in update.Deletions)
+                    {
+                        ProcessDeletion(code);
+                    }
                 }
-            }
-            if (update.CurrencyInfos != null)
-            {
-                foreach (var info in update.CurrencyInfos)
+                if (update.CurrencyInfos != null)
                 {
-                    ProcessInfo(info);
+                    foreach (var info in update.CurrencyInfos)
+                    {
+                        ProcessInfo(info);
+                    }
                 }
-            }
-            if (update.UpdatedConversions != null)
-            {
-                var updatedCurrencies = ProcessUpdatedConversions(update.UpdatedConversions);
-                foreach (var code in updatedCurrencies)
+                if (update.UpdatedConversions != null)
                 {
-                    UpdateIntermediateConversions(code);
+                    var updatedCurrencies = ProcessUpdatedConversions(update.UpdatedConversions);
+                    foreach (var code in updatedCurrencies)
+                    {
+                        UpdateIntermediateConversions(code);
+                    }
                 }
             }
         }
@@ -171,9 +215,9 @@ namespace CurrencyConverter
             if ((decimalDigits == null) == (roundingIncrement == null))
             {
                 throw new ArgumentException(
-                    $"Exactly one of decimalDigits and roundingIncrement must be set in " +
-                    $"currency info for {code}: decimalDigits={decimalDigits}, " +
-                    $"roundingIncrement={roundingIncrement}"
+                    $"Exactly one of decimalDigits and roundingIncrement must be set in "
+                        + $"currency info for {code}: decimalDigits={decimalDigits}, "
+                        + $"roundingIncrement={roundingIncrement}"
                 );
             }
             if (decimalDigits != null && (decimalDigits.Value < 0))
@@ -211,8 +255,8 @@ namespace CurrencyConverter
                 if (pair.Rate <= 0)
                 {
                     throw new ArgumentException(
-                        $"Invalid rate for conversion from {pair.FromCurrency} to " +
-                        $"{pair.ToCurrency}: {pair.Rate}"
+                        $"Invalid rate for conversion from {pair.FromCurrency} to "
+                            + $"{pair.ToCurrency}: {pair.Rate}"
                     );
                 }
                 var cachedRateKey = new CachedRateKey()
@@ -308,9 +352,9 @@ namespace CurrencyConverter
             else
             {
                 throw new InvalidOperationException(
-                    $"Conversion rate from {cachedRateKey.FromCurrency} to " +
-                    "{cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency} " +
-                    "does not exist."
+                    $"Conversion rate from {cachedRateKey.FromCurrency} to "
+                        + $"{cachedRateKey.ToCurrency} via {cachedRateKey.IntermediateCurrency} "
+                        + $"does not exist."
                 );
             }
         }
@@ -329,7 +373,8 @@ namespace CurrencyConverter
             }
             else
             {
-                return Math.Round(amount / info.RoundingIncrement.Value) * info.RoundingIncrement.Value;
+                return Math.Round(amount / info.RoundingIncrement.Value)
+                    * info.RoundingIncrement.Value;
             }
         }
     }

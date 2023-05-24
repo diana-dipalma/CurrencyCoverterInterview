@@ -5,6 +5,8 @@ namespace CurrencyConverter
 {
     public class CurrencyConverterRepository : ICurrencyConverterRepository
     {
+        // [DEPRECATED] Repository for legacy USD conversions. Internally this is converted to
+        // CurrencyUpdate. Remove this when initial state is migrated to use CurrencyUpdate directly.
         public IEnumerable<CurrencyConversion> GetConversions()
         {
             //RateFromUSD may be outdated values
