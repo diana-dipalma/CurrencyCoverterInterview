@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "eYHYCH8piPbjiX6rq9nl3hFAxdzx5fs89PTpEFhvRKioLZ0of8tuZY9ZEWQEkoSZvo74YqSXvqwM6CH4XprqSw==",
+  "dgSpecHash": "x6bx8SlGuMP0XBOlOnpv6DIpl74gS8ss0pIEp/FwooNki49n10NHhHvt3odHP6ZKLO2vzhb5GvSe7xGERKJzCA==",
   "success": true,
-  "projectFilePath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
+  "projectFilePath": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
   "expectedPackageFiles": [
     "/Users/dianadipalma/.nuget/packages/microsoft.codecoverage/16.4.0/microsoft.codecoverage.16.4.0.nupkg.sha512",
     "/Users/dianadipalma/.nuget/packages/microsoft.csharp/4.0.1/microsoft.csharp.4.0.1.nupkg.sha512",

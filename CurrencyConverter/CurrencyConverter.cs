@@ -2,7 +2,11 @@
 
 namespace CurrencyConverter
 {
-    public class Class1
+    public class CurrencyConverter
     {
+        public Decimal GetConvertedAmount(string fromCurrency, string toCurrency, decimal amount)
+        {
+            throw new NotImplementedException("Oops :)");
+        }
     }
 }

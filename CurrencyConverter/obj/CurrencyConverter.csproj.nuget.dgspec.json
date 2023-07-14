@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj": {}
+    "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/CurrencyConverter.csproj": {}
   },
   "projects": {
-    "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj": {
+    "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/CurrencyConverter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+        "projectUniqueName": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/CurrencyConverter.csproj",
         "projectName": "CurrencyConverter",
-        "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/CurrencyConverter.csproj",
+        "projectPath": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/CurrencyConverter.csproj",
         "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-        "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter/obj/",
+        "outputPath": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/dianadipalma/.config/NuGet/NuGet.Config"

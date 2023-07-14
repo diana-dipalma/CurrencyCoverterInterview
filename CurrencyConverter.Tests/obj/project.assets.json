@@ -1225,6 +1225,16 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
+      },
+      "CurrencyConverter/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/CurrencyConverter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CurrencyConverter.dll": {}
+        }
       }
     }
   },
@@ -4618,10 +4628,16 @@
         "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xpath.xmldocument.nuspec"
       ]
+    },
+    "CurrencyConverter/1.0.0": {
+      "type": "project",
+      "path": "../CurrencyConverter/CurrencyConverter.csproj",
+      "msbuildProject": "../CurrencyConverter/CurrencyConverter.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "CurrencyConverter >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 16.4.0",
       "NUnit3TestAdapter >= 3.15.1",
       "nunit >= 3.12.0"
@@ -4633,11 +4649,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
+      "projectUniqueName": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
       "projectName": "CurrencyConverter.Tests",
-      "projectPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
+      "projectPath": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter.Tests/CurrencyConverter.Tests.csproj",
       "packagesPath": "/Users/dianadipalma/.nuget/packages/",
-      "outputPath": "/Users/dianadipalma/Projects/CurrencyConverter/CurrencyConverter.Tests/obj/",
+      "outputPath": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/dianadipalma/.config/NuGet/NuGet.Config"
@@ -4651,7 +4667,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/CurrencyConverter.csproj": {
+              "projectPath": "/Users/dianadipalma/workspace/CurrencyCoverterInterview/CurrencyConverter/CurrencyConverter.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
