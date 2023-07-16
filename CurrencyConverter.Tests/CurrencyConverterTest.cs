@@ -9,7 +9,7 @@ namespace CurrencyConverter.Tests
         [SetUp]
         public void Setup()
         {
-            Assert.Fail("NOT IMPLEMENTED");
+            currencyConverter = new CurrencyConverter();
         }
 
         [Test]
