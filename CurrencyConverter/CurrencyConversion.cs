@@ -3,7 +3,7 @@ namespace CurrencyConverter
 {
     public class CurrencyConversion
     {
-        public String CountryCode;
+        public String CurrencyCode;
         public String CurrencyName;
         public Decimal RateFromUSDToCurrency;
     }

@@ -21,27 +21,27 @@ namespace CurrencyConverter
 
             foreach (var conversion in repo.GetConversions())
             {
-                if (conversion.RateFromUSDToCurrency <=0m)
+                if (conversion.RateFromUSDToCurrency <= 0m)
                 {
                     // Checking for 0 lets us avoid thinking about division by 0 later,
                     // and negative rates don't make sense either.
-                    throw new ArgumentException($"Nonsensical conversion rate for {conversion.CountryCode}");
+                    throw new ArgumentException($"Nonsensical conversion rate for {conversion.CurrencyCode}");
                 }
                 // We could precompute and store all currency pairs here, but it's also fast to calculate at run time.
                 // (In the airline pricing world, IATA publishes ICER rates for currency pairs. (And then there are
                 // multiple rates: BSR for pricing, ICH or ROE for other parts.. and every currency has its
                 // own rounding and decimal rules. Glad we don't have to do all that here :)
                 // We are just triangulating through USD, the Neutral Unit of Currency
-                _rates.Add(conversion.CountryCode, conversion);
+                _rates.Add(conversion.CurrencyCode, conversion);
             }
             // assert that _rates["USD"] exists?
         }
-        public CurrencyConversion GetConversion(string countryCode)
+        public CurrencyConversion GetConversion(string CurrencyCode)
         {
             CurrencyConversion conversion;
-            if (!_rates.TryGetValue(countryCode, out conversion))
+            if (!_rates.TryGetValue(CurrencyCode, out conversion))
             {
-                throw new RateNotFoundException($"Unknown currency: {countryCode}");
+                throw new RateNotFoundException($"Unknown currency: {CurrencyCode}");
             }
             return conversion;
         }
