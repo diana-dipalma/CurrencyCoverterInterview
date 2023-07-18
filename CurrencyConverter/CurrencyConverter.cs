@@ -36,12 +36,12 @@ namespace CurrencyConverter
             }
             // assert that _rates["USD"] exists?
         }
-        public CurrencyConversion GetConversion(string CurrencyCode)
+        public CurrencyConversion GetConversion(string currencyCode)
         {
             CurrencyConversion conversion;
-            if (!_rates.TryGetValue(CurrencyCode, out conversion))
+            if (!_rates.TryGetValue(currencyCode, out conversion))
             {
-                throw new RateNotFoundException($"Unknown currency: {CurrencyCode}");
+                throw new RateNotFoundException($"Unknown currency: {currencyCode}");
             }
             return conversion;
         }
@@ -64,10 +64,29 @@ namespace CurrencyConverter
                 return amount;
             }
             
-            fromConv = GetConversion(fromCurrency);
-            toConv = GetConversion(toCurrency);
+            fromConv = GetConversion(fromCurrency.ToUpper());
+            toConv = GetConversion(toCurrency.ToUpper());
 
-            return 20.56m;
+            // It's great that C# has a 20+ digit precision "Decimals" type - we don't have to
+            // worry about float precision issues, or make our own type :o
+            Decimal result;
+
+            // Technically, no need to special case USD since it's in the repo with 1.0 rate.
+            if (fromConv.CurrencyCode == "USD")
+            {
+                result = amount * toConv.RateFromUSDToCurrency;
+            }
+            else if (toConv.CurrencyCode == "USD")
+            {
+                result = amount / fromConv.RateFromUSDToCurrency;
+            }
+            else
+            {
+                result = amount * toConv.RateFromUSDToCurrency / fromConv.RateFromUSDToCurrency;
+            }
+            // I guess we round every currency to 2 decimals.
+            // Do that in the way that bankers do, according to the internet (see TestMidpointRounding).
+            return Math.Round(result, 2, MidpointRounding.ToEven);
         }
     }
 }
