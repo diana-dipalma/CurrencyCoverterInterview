@@ -1,7 +1,20 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace CurrencyConverter.Tests
 {
+    public class BadTestRepository : CurrencyConverterRepository
+    {
+        public override IEnumerable<CurrencyConversion> GetConversions()
+        {
+            // 0 or negative rates are not allowed
+            return new[] {
+                new CurrencyConversion() { CurrencyCode = "USD", CurrencyName = "United States Dollars", RateFromUSDToCurrency = 1.0M },
+                new CurrencyConversion() { CurrencyCode = "CAD", CurrencyName = "Canada Dollars", RateFromUSDToCurrency = 0M }
+            };
+        }
+    }
+
     public class CurrencyConverterTest
     {
         private CurrencyConverter currencyConverter;
@@ -12,7 +25,8 @@ namespace CurrencyConverter.Tests
             // In a real system, we would have a separate repo with fixed test rates,
             // vs loading the real live rates, because those will change and then our
             // tests break / no longer test what they were meant to.
-            currencyConverter = new CurrencyConverter();
+            var repo = new CurrencyConverterRepository();
+            currencyConverter = new CurrencyConverter(repo);
         }
 
         [Test]
@@ -66,8 +80,30 @@ namespace CurrencyConverter.Tests
         [Test]
         public void TestAllowNegativeAmounts()
         {
-            Assert.AreEqual(-.64m, currencyConverter.GetConvertedAmount("usd", "Cny", -0.10m));
-            Assert.AreEqual(-1.90m, currencyConverter.GetConvertedAmount("USD", "CNY", -0.30m));
+            // Why not. Also, allow lower case.
+            Assert.AreEqual(-.64m, currencyConverter.GetConvertedAmount("usd", "cny", -0.10m));
+            Assert.AreEqual(-1.90m, currencyConverter.GetConvertedAmount("Usd", "CNY", -0.30m));
+        }
+
+        [Test]
+        public void TestLargeAmounts()
+        {
+            // Maybe the converter should enforce an upper limit on amounts?
+            // Right now you can pass in any valid Decimal; Decimal has about 28/9 digits of precision,
+            // so this here (26 zeroes before the decimal point) is the largest where the 1 cent still
+            // gets correctly preserved.
+            Assert.AreEqual(127000000000000000000000000.01m,
+                currencyConverter.GetConvertedAmount("USD", "CAD", 100000000000000000000000000.01m));
+            Assert.AreEqual(100000000000000000000000000.01m,
+                currencyConverter.GetConvertedAmount("CRC", "USD", 64283000000000000000000000006.43m));
+        }
+
+        [Test]
+        public void TestNonsensicalRatesInRepo()
+        {
+            var repo = new BadTestRepository();
+            // assert that constructing a CurrencyConverter with the bad repo throws an exception
+            Assert.Throws<System.ArgumentException>(() => new CurrencyConverter(repo));
         }
     }
 }

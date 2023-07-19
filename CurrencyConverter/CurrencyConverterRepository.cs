@@ -5,7 +5,7 @@ namespace CurrencyConverter
 {
     public class CurrencyConverterRepository
     {
-        public IEnumerable<CurrencyConversion> GetConversions()
+        public virtual IEnumerable<CurrencyConversion> GetConversions()
         {
             //RateFromUSD may be outdated values
             return new[] {

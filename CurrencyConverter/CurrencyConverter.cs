@@ -13,10 +13,8 @@ namespace CurrencyConverter
     {
         private Dictionary<string, CurrencyConversion> _rates;
 
-        public CurrencyConverter()
+        public CurrencyConverter(CurrencyConverterRepository repo)
         { 
-            var repo = new CurrencyConverterRepository();
-
             _rates = new Dictionary<string, CurrencyConversion>();
 
             foreach (var conversion in repo.GetConversions())
@@ -45,8 +43,13 @@ namespace CurrencyConverter
             }
             return conversion;
         }
-       
-        // TODO: does C# use docstrings or such? E.g. to say which exceptions this may raise.
+
+        /// <summary>
+        /// Converts amount from one currency to another, using rates from the repository.
+        /// </summary>
+        /// <exception cref="RateNotFoundException">
+        /// Thrown if a currency code (fromCurrency or toCurrency) is needed but not found in the repository.
+        /// </exception>
         public Decimal GetConvertedAmount(string fromCurrency, string toCurrency, decimal amount)
         {
             CurrencyConversion fromConv, toConv;
@@ -67,7 +70,7 @@ namespace CurrencyConverter
             fromConv = GetConversion(fromCurrency.ToUpper());
             toConv = GetConversion(toCurrency.ToUpper());
 
-            // It's great that C# has a 20+ digit precision "Decimals" type - we don't have to
+            // It's great that C# has a 28 digit precision "Decimals" type - we don't have to
             // worry about float precision issues, or make our own type :o
             Decimal result;
 
